@@ -49,3 +49,11 @@ jobs:
     # Gradle build (Test 제외)
     - name: Build with Gradle
       run: ./gradlew clean build -x test
+
+    # Docker build
+    - name: Docker build
+      run: |
+        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERBUB_PASSWORD }}
+        docker build -t find-mind-chat .
+        docker tag find-mind-chat 22gamin/find-mind-chat:${GITHUB_SHA::7}
+        docker push 22gamin/find-mind-chat:${GITHUB_SHA::7}
